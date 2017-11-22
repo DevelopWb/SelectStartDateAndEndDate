@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:id="@+id/custom_content_ll"
-        android:layout_width="368dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:layout_editor_absoluteY="0dp"
@@ -17,6 +17,8 @@
         <RelativeLayout
 
             android:id="@+id/start_time_rl"
+            android:layout_marginRight="10dp
+"
             android:layout_width="match_parent"
             android:layout_height="40dp">
 
@@ -71,6 +73,7 @@
 
         <RelativeLayout
             android:id="@+id/end_time_rl"
+            android:layout_marginRight="10dp"
             android:layout_width="match_parent"
             android:layout_height="40dp">
 
