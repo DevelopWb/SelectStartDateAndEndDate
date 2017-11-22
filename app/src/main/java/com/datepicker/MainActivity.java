@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static com.datepicker.PublicUtils.GetWeekFromDate;
+import static com.datepicker.PublicUtils.compareTime;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,6 +38,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int day_end;
     private String date_start_str;
     private String date_end_str;
+    /**
+     * 确    定
+     */
+    private TextView mConfirmCustomTimeTv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mEndTimeRl.setOnClickListener(this);
         mEndDp = (DatePicker) findViewById(R.id.end_dp);
         mCustomContentLl = (LinearLayout) findViewById(R.id.custom_content_ll);
+        mConfirmCustomTimeTv = (TextView) findViewById(R.id.confirm_custom_time_tv);
+        mConfirmCustomTimeTv.setOnClickListener(this);
     }
 
     @Override
@@ -68,14 +76,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             default:
                 break;
+            case R.id.confirm_custom_time_tv:
+                break;
         }
     }
+
     /**
      * 初始化日期
      */
     private void initCalender() {
         Calendar calendar_end = Calendar.getInstance();
-        calendar_end.add(Calendar.DAY_OF_YEAR,7);
+        calendar_end.add(Calendar.DAY_OF_YEAR, 7);
         Date date_end = calendar_end.getTime();
         SimpleDateFormat form = new SimpleDateFormat("yyyy年MM月dd日");
         String ymd = form.format(date_end);
@@ -97,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         monthStart = calendar_start.get(Calendar.MONTH);
         dayStart = calendar_start.get(Calendar.DAY_OF_MONTH);
     }
+
     /**
      * 初始化DatePicker
      */
@@ -108,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String str_start = getStringTypeOfDate(year, monthOfYear + 1, dayOfMonth);
                 mStartTimeTv.setText(str_start);
                 date_start_str = new StringBuffer().append(year + "年" + (monthOfYear + 1) + "月" + dayOfMonth + "日").toString();
+                initCustomConfirmBtStatus();
             }
         });
         mEndDp.init(year_end, month_end, day_end, new DatePicker.OnDateChangedListener() {
@@ -116,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String str_end = getStringTypeOfDate(year, monthOfYear + 1, dayOfMonth);
                 date_end_str = new StringBuffer().append(year + "年" + (monthOfYear + 1) + "月" + dayOfMonth + "日").toString();
                 mEndTimeTv.setText(str_end);
+                initCustomConfirmBtStatus();
             }
         });
     }
@@ -130,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         displayDP.setVisibility(View.VISIBLE);
         unDisplayDp.setVisibility(View.GONE);
     }
+
     /**
      * 将年月日改成特定格式的字符串
      */
@@ -143,5 +158,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String week = GetWeekFromDate(sb.toString());
         sb.append(" " + week);
         return sb.toString();
+    }
+
+    /**
+     * 初始化自定义栏中确定按钮的状态
+     */
+    private void initCustomConfirmBtStatus() {
+        boolean sure = compareTime(date_start_str, date_end_str);
+        if (!sure) {
+            mConfirmCustomTimeTv.setBackgroundResource(R.drawable.custom_confirm_no_bg);
+            mConfirmCustomTimeTv.setClickable(false);
+        } else {
+            mConfirmCustomTimeTv.setBackgroundResource(R.drawable.custom_confirm_click_bg);
+        }
     }
 }

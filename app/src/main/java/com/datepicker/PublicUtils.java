@@ -1,5 +1,6 @@
 package com.datepicker;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -72,5 +73,29 @@ public class PublicUtils {
         }
         return week;
     }
+
+    /**
+     * 比较两个时间串的大小
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return
+     */
+    public static boolean compareTime(String startTime, String endTime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+        try {
+            Long a = sdf.parse(startTime).getTime();
+            Long b = sdf.parse(endTime).getTime();
+            if (a > b) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }
